@@ -1,0 +1,15 @@
+{
+  "name": "reden",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {},
+  "author": "https://reden.ai",
+  "license": "UNLICENSED",
+  "engines": {
+    "bun": ">=0.4.0",
+    "deno": ">=1.29.2",
+    "node": ">=18.13.0"
+  },
+  "packageManager": "^pnpm@8.0.0"
+}
