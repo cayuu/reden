@@ -1,0 +1,10 @@
+{
+  "name": "redenai",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {},
+  "keywords": [],
+  "author": "https://reden.ai",
+  "license": "ISC"
+}
