@@ -6,5 +6,11 @@
   "scripts": {},
   "keywords": [],
   "author": "https://reden.ai",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mustache": "4.2.0"
+  },
+  "devDependencies": {
+    "@types/mustache": "4.2.2"
+  }
 }
