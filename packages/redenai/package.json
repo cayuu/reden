@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {},
-  "keywords": [],
   "author": "https://reden.ai",
   "license": "ISC",
   "dependencies": {
