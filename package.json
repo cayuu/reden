@@ -11,5 +11,8 @@
     "deno": ">=1.29.2",
     "node": ">=18.13.0"
   },
-  "packageManager": "^pnpm@8.0.0"
+  "packageManager": "^pnpm@8.0.0",
+  "devDependencies": {
+    "prettier": "2.8.3"
+  }
 }
