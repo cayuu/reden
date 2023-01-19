@@ -72,10 +72,10 @@ const _toString = () => '<<Not implemented>>'
  */
 export function prompt (
   template: string,
-  viewParams: UNDEFINED = {},
-  config: UNDEFINED = {}
+  _viewParams: UNDEFINED = {},
+  _config: UNDEFINED = {}
 ) {
-  const partials = {}
+  // const partials = {}
 
   let _currentTags = activeTags
 
