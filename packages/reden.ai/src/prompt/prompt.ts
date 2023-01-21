@@ -71,8 +71,22 @@ const _toJSON = (_template: string, _params: UNDEFINED, _config: UNDEFINED) => {
  * Render the components of a prompt into a string
  *
  * @private
+ *
+ * @param template - The text template to render
+ * @param view - Optional data object to render values from
+ * @param partials - Optional Record of sub templates to apply
+ * @param delimiters - Optional override for setting Mustache tag delimiters
+ *
+ * @returns the rendered template string
  */
-const _toString = () => '<<Not implemented>>'
+const _toString = (
+  template: string,
+  view?: PromptTemplateParams,
+  partials?: Record<string, string>,
+  delimiters?: Mustache.OpeningAndClosingTags
+) => {
+  return Mustache.render(template, view, partials, delimiters);
+};
 
 /**
  * Generate a Prompt object
@@ -84,16 +98,16 @@ const _toString = () => '<<Not implemented>>'
  */
 export function prompt (
   template: string,
-  _viewParams: UNDEFINED = {},
+  viewParams: PromptTemplateParams = {},
   _config: UNDEFINED = {}
 ) {
-  // const partials = {}
+  const partials = {}
 
   let _currentTags = activeTags
 
   const _export: Prompt = {
     toJSON: () => _toJSON(template, {}, {}),
-    toString: () => _toString(),
+    toString: () => _toString(template, viewParams, partials, _currentTags),
     setTags: (openTag: string, closeTag: string) => {
       _currentTags = [openTag, closeTag]
       return _export
