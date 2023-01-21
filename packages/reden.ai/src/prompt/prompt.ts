@@ -8,6 +8,18 @@ let activeTags = DEFAULT_TAGS
 /** Temporary - replace with actual types */
 type UNDEFINED = any
 
+/**
+ * Prompt template parameters are a key:value Record using serialisable values.
+ * Note any `undefined` values are removed when serialised.
+ *
+ * @example
+ * const params: PromptTemplateParams = { name: 'Red' }
+ */
+type PromptTemplateParams = Record<
+  string,
+  string | number | boolean | null | undefined
+>
+
 interface Prompt {
   /**
    * Overrides the template tags for this prompt
