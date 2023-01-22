@@ -20,6 +20,14 @@ type PromptTemplateParams = Record<
   string | number | boolean | null | undefined
 >
 
+/**
+ * PromptConfig allows setting and initialising the parameters for a prompt
+ */
+interface PromptConfig {
+  /** Prompt tag delimiters, defaults to `['[[', ']]']` */
+  delimiters?: Mustache.OpeningAndClosingTags
+}
+
 interface Prompt {
   /**
    * Overrides the template tags for this prompt
