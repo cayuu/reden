@@ -108,7 +108,7 @@ const _toString = (
 export function prompt (
   template: string,
   viewParams: PromptTemplateParams = {},
-  _config: UNDEFINED = {}
+  config: PromptConfig = {}
 ) {
   const partials = {}
 
@@ -116,7 +116,7 @@ export function prompt (
    * Inherit custom config delimiters, or global delimiters. NOTE: can be
    * overriden by calling the instance `.setDelimiters(open, close)`
    */
-  let _delimiters = activeDelimiters
+  let _delimiters = config.delimiters ?? activeDelimiters
 
   const _export: Prompt = {
     toJSON: () => _toJSON(template, {}, {}),
