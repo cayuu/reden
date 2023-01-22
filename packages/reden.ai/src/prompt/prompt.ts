@@ -1,9 +1,9 @@
 import Mustache from 'mustache'
 
 /** Default template tags wrap view variables in `[[key]]` */
-const DEFAULT_TAGS: Mustache.OpeningAndClosingTags = ['[[', ']]']
+const DEFAULT_DELIMITERS: Mustache.OpeningAndClosingTags = ['[[', ']]']
 
-let activeTags = DEFAULT_TAGS
+let activeDelimiters = DEFAULT_DELIMITERS
 
 /** Temporary - replace with actual types */
 type UNDEFINED = any
@@ -26,15 +26,16 @@ interface Prompt {
    *
    * @example
    * ```
-   * const p = prompt('Hi <% name %>', { name: 'Red' }).setTags('<%', '%>')
+   * const p = prompt('Hi <% name %>', { name: 'Red' })
+   *   .setDelimiters('<%', '%>')
    * console.log(p.toString())
    * // -> "Hi Red"
    * ```
    *
-   * @param openTag - The opening tag
-   * @param closeTag - The closing tag
+   * @param open - The opening delimiter
+   * @param close - The closing delimiter
    */
-  setTags: (openTag: string, closeTag: string) => Prompt
+  setDelimiters: (open: string, close: string) => Prompt
 
   /**
    * Renders the prompt as a ready-to-use, formatted string
@@ -103,13 +104,17 @@ export function prompt (
 ) {
   const partials = {}
 
-  let _currentTags = activeTags
+  /**
+   * Inherit custom config delimiters, or global delimiters. NOTE: can be
+   * overriden by calling the instance `.setDelimiters(open, close)`
+   */
+  let _delimiters = activeDelimiters
 
   const _export: Prompt = {
     toJSON: () => _toJSON(template, {}, {}),
-    toString: () => _toString(template, viewParams, partials, _currentTags),
-    setTags: (openTag: string, closeTag: string) => {
-      _currentTags = [openTag, closeTag]
+    toString: () => _toString(template, viewParams, partials, _delimiters),
+    setDelimiters: (openTag: string, closeTag: string) => {
+      _delimiters = [openTag, closeTag]
       return _export
     },
   }
@@ -120,13 +125,13 @@ export function prompt (
 /**
  * Sets ALL subsequent prompt() tags to the new `openTag` and `closeTag`. Note
  * that this is a global state modifier to prompt. Consider using the instance
- * version of this function: `prompt().setTags(open, close)`
+ * version of this function: `prompt().setDelimiters(open, close)`
  *
  * @param openTag - The opening tag
  * @param closeTag - The closing tag
  */
-prompt.overrideGlobalTags = function (openTag: string, closeTag: string) {
-  activeTags = [openTag, closeTag]
+prompt.overrideGlobalDelimiters = function (openTag: string, closeTag: string) {
+  activeDelimiters = [openTag, closeTag]
 }
 
 export default prompt
