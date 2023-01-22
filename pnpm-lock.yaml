@@ -4,6 +4,9 @@ importers:
 
   .:
     devDependencies:
+      husky:
+        specifier: 8.0.3
+        version: 8.0.3
       prettier:
         specifier: 2.8.3
         version: 2.8.3
@@ -32,6 +35,12 @@ packages:
 
   /@types/mustache@4.2.2:
     resolution: {integrity: sha512-MUSpfpW0yZbTgjekDbH0shMYBUD+X/uJJJMm9LXN1d5yjl5lCY1vN/eWKD6D1tOtjA6206K0zcIPnUaFMurdNA==}
+    dev: true
+
+  /husky@8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /mustache@4.2.0:
