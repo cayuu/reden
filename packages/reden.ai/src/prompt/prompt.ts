@@ -28,6 +28,19 @@ interface PromptConfig {
   delimiters?: Mustache.OpeningAndClosingTags
 }
 
+/**
+ * Serialised prompts represent the core prompt values that can be stored and
+ * retrieved for later reinstantiation
+ */
+interface SerialisedPrompt {
+  /** The raw prompt template */
+  template: string
+  /** JSON serialised template parameters (undefined values are stripped) */
+  params?: PromptTemplateParams
+  /** Prompt configuration overrides */
+  config?: PromptConfig
+}
+
 interface Prompt {
   /**
    * Overrides the template tags for this prompt
