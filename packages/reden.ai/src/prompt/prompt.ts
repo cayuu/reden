@@ -5,9 +5,6 @@ const DEFAULT_DELIMITERS: Mustache.OpeningAndClosingTags = ['[[', ']]']
 
 let activeDelimiters = DEFAULT_DELIMITERS
 
-/** Temporary - replace with actual types */
-type UNDEFINED = any
-
 /**
  * Prompt template parameters are a key:value Record using serialisable values.
  * Note any `undefined` values are removed when serialised.
@@ -85,8 +82,19 @@ interface Prompt {
  *
  * @returns a JSON string
  */
-const _toJSON = (_template: string, _params: UNDEFINED, _config: UNDEFINED) => {
-  return JSON.stringify({ not_implemented: true })
+const _toJSON = (
+  template = "",
+  params: PromptTemplateParams,
+  config: PromptConfig
+) => {
+  // Every serialised prompt has a template string, even if it's empty
+  const output: SerialisedPrompt = { template }
+
+  // Apply optional additional prompt components to export
+  if (Object.keys(params).length) output.params = params
+  if (Object.keys(config).length) output.config = config
+
+  return JSON.stringify(output)
 }
 
 /**
@@ -132,7 +140,7 @@ export function prompt (
   let _delimiters = config.delimiters ?? activeDelimiters
 
   const _export: Prompt = {
-    toJSON: () => _toJSON(template, {}, {}),
+    toJSON: () => _toJSON(template, viewParams, config),
     toString: () => _toString(template, viewParams, partials, _delimiters),
     setDelimiters: (openTag: string, closeTag: string) => {
       _delimiters = [openTag, closeTag]
