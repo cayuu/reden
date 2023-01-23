@@ -94,8 +94,8 @@ const _toString = (
   partials?: Record<string, string>,
   delimiters?: Mustache.OpeningAndClosingTags
 ) => {
-  return Mustache.render(template, view, partials, delimiters);
-};
+  return Mustache.render(template, view, partials, delimiters)
+}
 
 /**
  * Generate a Prompt object
