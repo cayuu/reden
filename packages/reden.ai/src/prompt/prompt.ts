@@ -68,6 +68,12 @@ interface Prompt {
    * @returns The formatted prompt string
    */
   toString: () => string
+
+  /**
+   * Returns the current prompt as a JSON string `SerialisedPrompt`
+   *
+   * @returns A JSON string output of the SerialisedPrompt
+   */
   toJSON: () => string
 }
 
