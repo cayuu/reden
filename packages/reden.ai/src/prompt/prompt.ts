@@ -72,17 +72,17 @@ interface Prompt {
 }
 
 /**
- * Serialise a prompt to JSON
+ * Serialise a prompt object to a `SerialisedPrompt` object format
  *
  * @private
  *
- * @param _template - The raw prompt text
- * @param _params - View parameter data to populate the template
- * @param _config - Prompt config
+ * @param template - The raw prompt text
+ * @param params - View parameter data to populate the template
+ * @param config - Prompt config
  *
- * @returns a JSON string
+ * @returns a `SerialisedPrompt` object
  */
-const _toJSON = (
+const _toObject = (
   template = "",
   params: PromptTemplateParams,
   config: PromptConfig
@@ -94,7 +94,7 @@ const _toJSON = (
   if (Object.keys(params).length) output.params = params
   if (Object.keys(config).length) output.config = config
 
-  return JSON.stringify(output)
+  return output
 }
 
 /**
@@ -140,7 +140,7 @@ export function prompt (
   let _delimiters = config.delimiters ?? activeDelimiters
 
   const _export: Prompt = {
-    toJSON: () => _toJSON(template, viewParams, config),
+    toJSON: () => JSON.stringify(_toObject(template, viewParams, config)),
     toString: () => _toString(template, viewParams, partials, _delimiters),
     setDelimiters: (openTag: string, closeTag: string) => {
       _delimiters = [openTag, closeTag]
