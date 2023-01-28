@@ -56,6 +56,16 @@ interface Prompt {
   setDelimiters: (open: string, close: string) => Prompt
 
   /**
+   * Returns the prompt as a `SerialisedPrompt` that can be used to instantiate
+   * new prompts or serialised and saved
+   *
+   * @see Prompt.toJSON()
+   *
+   * @returns A `SerialisedPrompt` object from the current prompt
+   */
+  toObject: () => SerialisedPrompt
+
+  /**
    * Renders the prompt as a ready-to-use, formatted string
    *
    * @example
@@ -147,6 +157,7 @@ export function prompt (
 
   const _export: Prompt = {
     toJSON: () => JSON.stringify(_toObject(template, viewParams, config)),
+    toObject: () => _toObject(template, viewParams, config),
     toString: () => _toString(template, viewParams, partials, _delimiters),
     setDelimiters: (openTag: string, closeTag: string) => {
       _delimiters = [openTag, closeTag]
