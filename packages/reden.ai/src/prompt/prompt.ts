@@ -58,6 +58,26 @@ interface Prompt {
   setDelimiters: (open: string, close: string) => Prompt
 
   /**
+   * Update the prompt template view parameters. Merges params by default, but
+   * you can set `{ override: true }` to replace the current params.
+   *
+   * @example
+   * ```
+   * const p = prompt('Hi [[name]]').setParams({ name: 'Red' })
+   * console.log(p.toString())
+   * // -> "Hi Red"
+   * ```
+   *
+   * @param params - A key:value object of template parameters to apply
+   * @param opts.override - Option to overwrite/replace the current params
+   * @returns The current prompt instance
+   */
+  setParams: (
+    params: PromptTemplateParams,
+    options?: { override?: boolean }
+  ) => Prompt
+
+  /**
    * Returns the prompt as a `SerialisedPrompt` that can be used to instantiate
    * new prompts or serialised and saved
    *
@@ -161,6 +181,15 @@ export function prompt (
     toJSON: () => JSON.stringify(_toObject(template, params, config)),
     toObject: () => _toObject(template, params, config),
     toString: () => _toString(template, params, partials, _delimiters),
+    setParams: (
+      nextParams: PromptTemplateParams,
+      opts?: { override?: boolean }
+    ) => {
+      params = opts?.override
+        ? nextParams
+        : { ...params, ...nextParams }
+      return _export
+    },
     setDelimiters: (openTag: string, closeTag: string) => {
       _delimiters = [openTag, closeTag]
       return _export
