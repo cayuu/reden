@@ -52,6 +52,8 @@ interface Prompt {
    *
    * @param open - The opening delimiter
    * @param close - The closing delimiter
+   *
+   * @return The current prompt instance
    */
   setDelimiters: (open: string, close: string) => Prompt
 
