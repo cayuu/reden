@@ -137,14 +137,14 @@ const _toString = (
 /**
  * Generate a Prompt object
  *
- * @param template
- * @param viewParams
- * @param config
+ * @param template - The raw prompt text including delimited variables
+ * @param params - Optional Record of data values for prompt template variables
+ * @param config - Optional prompt config intialisers
  * @returns A Prompt object
  */
 export function prompt (
   template: string,
-  viewParams: PromptTemplateParams = {},
+  params: PromptTemplateParams = {},
   config: PromptConfig = {}
 ) {
   const partials = {}
@@ -156,9 +156,9 @@ export function prompt (
   let _delimiters = config.delimiters ?? activeDelimiters
 
   const _export: Prompt = {
-    toJSON: () => JSON.stringify(_toObject(template, viewParams, config)),
-    toObject: () => _toObject(template, viewParams, config),
-    toString: () => _toString(template, viewParams, partials, _delimiters),
+    toJSON: () => JSON.stringify(_toObject(template, params, config)),
+    toObject: () => _toObject(template, params, config),
+    toString: () => _toString(template, params, partials, _delimiters),
     setDelimiters: (openTag: string, closeTag: string) => {
       _delimiters = [openTag, closeTag]
       return _export
