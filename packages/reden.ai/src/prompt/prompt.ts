@@ -176,6 +176,14 @@ export function prompt (
    * overriden by calling the instance `.setDelimiters(open, close)`
    */
   let _delimiters = config.delimiters ?? activeDelimiters
+  // Sanity check for valid delimiters
+  for (const tag of _delimiters) {
+    if (!tag.length) {
+      throw new Error(
+        `Invalid prompt delimiters: ${_delimiters.join(", ")}. Delimiters must be at least 1 character long.`
+      )
+    }
+  }
 
   const _export: Prompt = {
     toJSON: () => JSON.stringify(_toObject(template, params, config)),
