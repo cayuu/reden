@@ -18,5 +18,11 @@
     "husky": "8.0.3",
     "lint-staged": "13.1.2",
     "prettier": "2.8.3"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   }
 }
