@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "prepare": "husky install"
+  },
   "author": "https://reden.ai",
   "license": "UNLICENSED",
   "engines": {
