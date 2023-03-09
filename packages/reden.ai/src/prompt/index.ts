@@ -1,1 +1,1 @@
-export { default } from './prompt.ts'
+export { default } from './prompt.js'
