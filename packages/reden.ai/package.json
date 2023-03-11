@@ -4,6 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {},
+  "exports": {
+    ".": {
+      "import": "./src/index.ts"
+    }
+  },
   "author": "https://reden.ai",
   "license": "ISC",
   "dependencies": {
