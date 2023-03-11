@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "name": "examples",
+  "description": "Examples for how to use reden.ai",
+  "version": "0.0.0",
+  "scripts": {},
+  "author": "https://reden.ai",
+  "type": "module",
+  "license": "ISC"
+}
