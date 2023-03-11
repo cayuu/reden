@@ -6,5 +6,8 @@
   "scripts": {},
   "author": "https://reden.ai",
   "type": "module",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "reden.ai": "workspace:*"
+  }
 }
