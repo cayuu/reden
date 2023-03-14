@@ -201,10 +201,13 @@ export function prompt (
   }
 
   const _export: Prompt = {
+    // Unique ID
     id: uuid(),
+    // Prompt Serialisers
     toJSON: () => JSON.stringify(_toObject(_export, template, params, config)),
     toObject: () => _toObject(_export, template, params, config),
     toString: () => _toString(template, params, partials, _delimiters),
+    // Merge or overwrite template parameters
     setParams: (
       nextParams: PromptTemplateParams,
       opts?: { override?: boolean }
@@ -212,12 +215,14 @@ export function prompt (
       params = opts?.override ? nextParams : { ...params, ...nextParams }
       return _export
     },
+    // Overwrite this prompt's template delimiters
     setDelimiters: (openTag: string, closeTag: string) => {
       _delimiters = [openTag, closeTag]
       return _export
     },
   }
 
+  // Restrict write access to readonly Prompt properties
   Object.defineProperty(_export, 'id', {
     writable: false,
     configurable: false,
