@@ -1,5 +1,7 @@
 import Mustache from 'mustache'
 
+import uuid from '../utils/uuid.js'
+
 /** Default template tags wrap view variables in `[[key]]` */
 const DEFAULT_DELIMITERS: Mustache.OpeningAndClosingTags = ['[[', ']]']
 
@@ -30,6 +32,8 @@ interface PromptConfig {
  * retrieved for later reinstantiation
  */
 interface SerialisedPrompt {
+  /** The unique ID of the prompt */
+  id: string
   /** The raw prompt template */
   template: string
   /** JSON serialised template parameters (undefined values are stripped) */
@@ -39,6 +43,11 @@ interface SerialisedPrompt {
 }
 
 interface Prompt {
+  /**
+   * The unique identifier for this prompt. Defaults to UUID.
+   */
+  readonly id: string
+
   /**
    * Overrides the template tags for this prompt
    *
@@ -121,12 +130,16 @@ interface Prompt {
  * @returns a `SerialisedPrompt` object
  */
 const _toObject = (
-  template = "",
+  prompt: Prompt,
+  template = '',
   params: PromptTemplateParams,
   config: PromptConfig
 ) => {
   // Every serialised prompt has a template string, even if it's empty
-  const output: SerialisedPrompt = { template }
+  const output: SerialisedPrompt = {
+    id: prompt.id,
+    template,
+  }
 
   // Apply optional additional prompt components to export
   if (Object.keys(params).length) output.params = params
@@ -180,22 +193,23 @@ export function prompt (
   for (const tag of _delimiters) {
     if (!tag.length) {
       throw new Error(
-        `Invalid prompt delimiters: ${_delimiters.join(", ")}. Delimiters must be at least 1 character long.`
+        `Invalid prompt delimiters: ${_delimiters.join(
+          ', '
+        )}. Delimiters must be at least 1 character long.`
       )
     }
   }
 
   const _export: Prompt = {
-    toJSON: () => JSON.stringify(_toObject(template, params, config)),
-    toObject: () => _toObject(template, params, config),
+    id: uuid(),
+    toJSON: () => JSON.stringify(_toObject(_export, template, params, config)),
+    toObject: () => _toObject(_export, template, params, config),
     toString: () => _toString(template, params, partials, _delimiters),
     setParams: (
       nextParams: PromptTemplateParams,
       opts?: { override?: boolean }
     ) => {
-      params = opts?.override
-        ? nextParams
-        : { ...params, ...nextParams }
+      params = opts?.override ? nextParams : { ...params, ...nextParams }
       return _export
     },
     setDelimiters: (openTag: string, closeTag: string) => {
@@ -203,6 +217,11 @@ export function prompt (
       return _export
     },
   }
+
+  Object.defineProperty(_export, 'id', {
+    writable: false,
+    configurable: false,
+  })
 
   return _export
 }
