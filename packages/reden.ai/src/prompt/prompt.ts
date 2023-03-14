@@ -49,10 +49,16 @@ interface SerialisedPrompt {
 }
 
 interface Prompt {
-  /**
-   * The unique identifier for this prompt. Defaults to UUID.
-   */
+  /** The unique identifier for this prompt. Defaults to UUID */
   readonly id: string
+  /** The raw prompt template */
+  readonly _template: string
+  /** JSON serialised template parameters (undefined values are stripped) */
+  readonly _params?: PromptTemplateParams
+  /** Prompt configuration overrides */
+  readonly _config?: PromptConfig
+  /** Delimiter strings for the prompt variables (e.g. `[[` and `]]`) */
+  readonly _delimiters?: Mustache.OpeningAndClosingTags
 
   /**
    * Overrides the template tags for this prompt
@@ -207,12 +213,22 @@ export function prompt (
   }
 
   const _export: Prompt = {
-    // Unique ID
+    // Properties (all readonly)
+    // ---
     id: uuid(),
+    _template: template,
+    _params: params,
+    _config: config,
+    _delimiters,
+
     // Prompt Serialisers
+    // ---
     toJSON: () => JSON.stringify(_toObject(_export, template, params, config)),
     toObject: () => _toObject(_export, template, params, config),
     toString: () => _toString(template, params, partials, _delimiters),
+
+    // Prompt Modifiers
+    // ---
     // Merge or overwrite template parameters
     setParams: (
       nextParams: PromptTemplateParams,
@@ -229,9 +245,13 @@ export function prompt (
   }
 
   // Restrict write access to readonly Prompt properties
-  Object.defineProperty(_export, 'id', {
-    writable: false,
-    configurable: false,
+  const READ_ONLY = { writable: false, configurable: false }
+  Object.defineProperties(_export, {
+    id: READ_ONLY,
+    _template: READ_ONLY,
+    _params: READ_ONLY,
+    _config: READ_ONLY,
+    _delimiters: READ_ONLY,
   })
 
   return _export
