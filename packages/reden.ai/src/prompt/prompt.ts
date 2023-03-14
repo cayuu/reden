@@ -7,6 +7,15 @@ const DEFAULT_DELIMITERS: Mustache.OpeningAndClosingTags = ['[[', ']]']
 
 let activeDelimiters = DEFAULT_DELIMITERS
 
+/** The base types that a prompt template value can hold */
+type BasicPromptValue = string | number | boolean | BasicPromptValue[]
+/** Valid values for a prompt template variable  */
+type PromptTemplateValue =
+  | BasicPromptValue
+  | Record<string, BasicPromptValue>
+  | null
+  | undefined
+
 /**
  * Prompt template parameters are a key:value Record using serialisable values.
  * Note any `undefined` values are removed when serialised.
@@ -14,10 +23,7 @@ let activeDelimiters = DEFAULT_DELIMITERS
  * @example
  * const params: PromptTemplateParams = { name: 'Red' }
  */
-type PromptTemplateParams = Record<
-  string,
-  string | number | boolean | null | undefined
->
+type PromptTemplateParams = Record<string, PromptTemplateValue>
 
 /**
  * PromptConfig allows setting and initialising the parameters for a prompt
