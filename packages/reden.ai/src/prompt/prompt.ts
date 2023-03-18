@@ -135,24 +135,18 @@ interface Prompt {
  *
  * @private
  *
- * @param template - The raw prompt text
- * @param params - View parameter data to populate the template
- * @param config - Prompt config
+ * @param _prompt - The prompt to convert to an object
  *
  * @returns a `SerialisedPrompt` object
  */
-const _toObject = (
-  prompt: Prompt,
-  template = '',
-  params: PromptTemplateParams,
-  config: PromptConfig
-) => {
+const _toObject = (_prompt: Prompt) => {
   // Every serialised prompt has a template string, even if it's empty
   const output: SerialisedPrompt = {
-    id: prompt.id,
-    template,
+    id: _prompt.id,
+    template: _prompt._template,
   }
-
+  const params = _prompt._params ?? {}
+  const config = _prompt._config ?? {}
   // Apply optional additional prompt components to export
   if (Object.keys(params).length) output.params = params
   if (Object.keys(config).length) output.config = config
@@ -223,8 +217,8 @@ export function prompt (
 
     // Prompt Serialisers
     // ---
-    toJSON: () => JSON.stringify(_toObject(_export, template, params, config)),
-    toObject: () => _toObject(_export, template, params, config),
+    toJSON: () => JSON.stringify(_toObject(_export)),
+    toObject: () => _toObject(_export),
     toString: () => _toString(template, params, partials, _delimiters),
 
     // Prompt Modifiers
