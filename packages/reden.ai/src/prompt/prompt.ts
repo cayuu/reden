@@ -26,6 +26,15 @@ type PromptTemplateValue =
 type PromptTemplateParams = Record<string, PromptTemplateValue>
 
 /**
+ * An export structure representing the dynamic variables in a given prompt,
+ * exported as a dictionary, keyed to  `{ key, value }`
+ */
+type PromptParamsExport = Record<
+  string,
+  { key: string; value?: PromptTemplateValue }
+>
+
+/**
  * PromptConfig allows setting and initialising the parameters for a prompt
  */
 interface PromptConfig {
