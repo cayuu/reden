@@ -70,6 +70,20 @@ interface Prompt {
   readonly _delimiters?: Mustache.OpeningAndClosingTags
 
   /**
+   * Returns the key:value pairs of any dynamic variables in the prompt template
+   *
+   * @example
+   * ```
+   * const p = prompt('Hi [[name]], good [[time]]', { time: 'morning' })
+   * console.log(p.getParams())
+   * //-> { name: { key: 'name' }, time: { key: 'time', value: 'morning' } }
+   * ```
+   *
+   * @returns export of the prompt dynamic values as `PromptParamsExport`
+   */
+  getParams: () => PromptParamsExport
+
+  /**
    * Overrides the template tags for this prompt
    *
    * @example
@@ -164,6 +178,36 @@ const _toObject = (_prompt: Prompt) => {
 }
 
 /**
+ * Builds a model of the dynamic values present in the Prompt._template
+ *
+ * @param _prompt - The prompt to export the params from
+ *
+ * @returns a compiled `PromptParamsExport` of prompt template dynamic variables
+ */
+const _buildParamsModel = (_prompt: Prompt) => {
+  const parsed = Mustache.parse(_prompt._template, _prompt._delimiters)
+  let count = parsed.length
+
+  const out: PromptParamsExport = {}
+
+  const TYPE = 0
+  const KEY = 1
+  const MUSTACHE_VAR_KEY = 'name'
+
+  while (count--) {
+    const section = parsed[count]
+    if (!section?.length) break
+    if (section[TYPE] === MUSTACHE_VAR_KEY) {
+      const key = section[KEY]
+      out[key] = { key }
+      if (_prompt._params?.[key]) out[key].value = _prompt._params[key]
+    }
+  }
+
+  return out
+}
+
+/**
  * Render the components of a prompt into a string
  *
  * @private
@@ -229,6 +273,9 @@ export function prompt (
     toJSON: () => JSON.stringify(_toObject(_export)),
     toObject: () => _toObject(_export),
     toString: () => _toString(template, params, partials, _delimiters),
+
+    // Returns information about the template variables
+    getParams: () => _buildParamsModel(_export),
 
     // Prompt Modifiers
     // ---
