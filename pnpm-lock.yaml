@@ -4,6 +4,9 @@ importers:
 
   .:
     devDependencies:
+      '@types/node':
+        specifier: 18.15.3
+        version: 18.15.3
       husky:
         specifier: 8.0.3
         version: 8.0.3
