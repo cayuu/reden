@@ -35,6 +35,9 @@ importers:
       '@types/node':
         specifier: 18.15.3
         version: 18.15.3
+      cohere-ai:
+        specifier: 6.0.0
+        version: 6.0.0
       openai:
         specifier: 3.2.1
         version: 3.2.1
@@ -136,6 +139,10 @@ packages:
     dependencies:
       slice-ansi: 5.0.0
       string-width: 5.1.2
+    dev: true
+
+  /cohere-ai@6.0.0:
+    resolution: {integrity: sha512-u1KmPw2PWbTQbbZXmdVs610N/zYyh/V6mL/nDXqx1Gl6X7IH84z9gK3jNv/f69Uzc007xe3zHmMYk80WlkHEmA==}
     dev: true
 
   /color-convert@2.0.1:
